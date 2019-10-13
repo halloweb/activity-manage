@@ -1,0 +1,36 @@
+.dashboard {
+    padding:36px;
+    .row {
+        display: flex;
+        margin-bottom:43px;
+        .panel {
+            width:33.3%;
+            height:286px;
+            background:rgba(255,255,255,1);
+            border-radius:11px;
+            margin:0 1.33%;
+            padding:20px 25px;
+            &.voucher {
+              width:36.6%;  
+            }
+            &:first-child {
+              margin-left:0;
+            }
+            &:last-child {
+                margin-right:0;
+            }
+            &.panel_aside {
+                width:24.8%;
+                height:286px;
+            }
+            &.panel_col2 {
+                width:72.5%;
+                height:428px;
+            }
+            &.banner {
+                height:428px;
+            }
+        }
+    }
+}
+
