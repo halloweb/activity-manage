@@ -30,7 +30,21 @@
             &.banner {
                 height:428px;
             }
+            .title {
+               color:#221F51;
+               font-size:18px;
+            }
+            .subTitle {
+               font-size:13px;
+               color:rgba(146,144,177,1);
+            }
+            .voucherUse {
+                height:100%;
+                display:flex;
+                flex-direction: column
+            }
         }
+
     }
 }
 
