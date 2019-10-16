@@ -33,15 +33,55 @@
             .title {
                color:#221F51;
                font-size:18px;
+               font-weight:400;
             }
             .subTitle {
                font-size:13px;
                color:rgba(146,144,177,1);
             }
-            .voucherUse {
+            .voucherUse,.active-user {
                 height:100%;
                 display:flex;
-                flex-direction: column
+                flex-direction: column;
+                .bottom {
+                    display:flex;
+                    justify-content: flex-end;
+                    div {
+                        padding:0 10px;
+                        height:28px;
+                        line-height:28px;
+                        text-align: center;
+                        border:1px solid rgba(217,214,225,1);
+                        border-radius:5px;
+                        font-size:12px;
+                        margin-left:16px;
+                    }
+                }
+            }
+            .topBar {
+                display:flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .voucher-edit {
+                height:100%;
+                display:flex;
+                flex-direction: column;
+                .btn-edit {
+                    font-size:12px;
+                }
+                .voucherList {
+                    flex:1;
+                    overflow: auto;
+                    .voucher-item {
+                        height: 80px;
+                        border-bottom:1px solid #D9D6E1;
+                        .count {
+                            font-size:21px;
+                            color:#34BFA3;
+                        }
+                    }
+                 }
             }
         }
 
