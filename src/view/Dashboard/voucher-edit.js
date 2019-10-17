@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { Modal, Button, Form, Input } from 'antd';
+import { Modal, Button, Form, Input, Row, Col } from 'antd';
 function VoucherEdit () {
     const [visible,setVisible] = useState(false)
     const [confirmLoading,setLoading] = useState(false)
@@ -38,6 +38,7 @@ function VoucherEdit () {
             visible={visible}
             onCancel={setVisible}
             handleOk={handleOk}
+            voucherList={voucherList}
             />
         </div>
     )
@@ -46,7 +47,7 @@ function VoucherEdit () {
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
     class extends React.Component {
       render() {
-        const { visible, handleOk, onCancel, form } = this.props;
+        const { visible, handleOk, onCancel, form, voucherList} = this.props;
         const { getFieldDecorator } = form;
         return (
           <Modal
@@ -58,14 +59,27 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
             onOk={handleOk}
           >
             <Form layout="vertical">
-              <Form.Item label="Title">
+          { voucherList.map(item => {
+
+            return (<Row>
+              <Col span={12}>
+                <Form.Item label="Title">
+                  {getFieldDecorator('title', {
+                    rules: [{ required: true, message: '代金券名称不能为空' }],
+                  })(<Input />)}
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item label="Description">
                 {getFieldDecorator('title', {
-                  rules: [{ required: true, message: 'Please input the title of collection!' }],
-                })(<Input />)}
-              </Form.Item>
-              <Form.Item label="Description">
-                {getFieldDecorator('description')(<Input type="textarea" />)}
-              </Form.Item>
+                    rules: [{ required: true, message: '中奖比例不能为空' }],
+                  })(<Input />)}
+                </Form.Item>
+              </Col>
+            </Row>
+            )            
+          })
+          }  
             </Form>
           </Modal>
         );
