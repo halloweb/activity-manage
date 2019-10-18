@@ -1,0 +1,22 @@
+.active-details {
+  display:flex;
+  align-items: stretch;
+  padding:36px;
+  .merchant-wrap {
+    flex: 1;
+    height:643px;
+    background-color:#fff;
+    .title {
+      height:60px;
+      border-bottom:1px solid #F7F7FB;
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      padding:28px;
+      color:#221F51;
+    }
+  }
+  .aside-panel {
+
+  }
+}
