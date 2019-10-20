@@ -3,6 +3,8 @@ import './index.scss'
 import { Layout, Menu, Icon } from 'antd';
 import { Link, Route } from "react-router-dom"
 import Dashboard from "./Dashboard/Dashboard"
+import ActivityDetails from './activity/Details'
+import ActivityEdit from './activity/activity-edit'
 const { Header, Sider, Content } = Layout
 function View({ match }) {
     const [collapsed, setCollapsed] = useState(true)
@@ -16,13 +18,17 @@ function View({ match }) {
                 <span>主页</span>
             </Link>
             </Menu.Item>
-            <Menu.Item key="2">
-              <Icon type="video-camera" />
-              <span>nav 2</span>
+            <Menu.Item key="activityDetails">
+            <Link to="/view/activityDetails">  
+              <Icon type="table" />
+              <span>活动详情</span>
+            </Link>
             </Menu.Item>
-            <Menu.Item key="3">
-              <Icon type="upload" />
-              <span>nav 3</span>
+            <Menu.Item key="activityInfo">
+            <Link to="/view/activityInfo"> 
+              <Icon type="edit" />
+              <span>活动编辑</span>
+              </Link>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -36,6 +42,8 @@ function View({ match }) {
           </Header>
           <Content>
             <Route path="/view/dashboard" component={Dashboard}/>
+            <Route path="/view/activityDetails" component={ActivityDetails}/>
+            <Route path="/view/activityInfo" component={ActivityEdit}/>
           </Content>
         </Layout>
       </Layout>

@@ -1,0 +1,51 @@
+.first-level,.second-level {
+    display:flex;
+    align-items: center;
+    .item {
+        padding:0 22px;
+        height:45px;
+        line-height:45px;
+        border-radius: 11px;
+        color:#888888;
+        border:1px solid #888888;
+        margin:0 16px 16px 0;
+        background:#fff;
+        font-size:18px;
+        cursor: pointer;
+        &.active {
+            border-color:#1890ff;
+            color:#1890ff;
+        }
+    }
+}
+.second-level .item {
+    height:30px;
+    line-height:30px;
+}
+.first-level-edit {
+    display:flex;
+    padding:16px 20px;
+    background-color:#fff;
+    border-radius: 11px;
+    .name {
+        height:100%;
+        margin-right:20px;
+        .title {
+            margin-bottom:18px;
+        }
+    }
+    button {
+        align-self: center;
+    }
+    .item {
+        display:flex;
+        align-items: top;
+        margin-right:20px;
+    }
+    .title {
+        font-size:18px;
+        color:#221F51;
+        font-weight: 400;
+        margin-right:10px;
+    }
+}

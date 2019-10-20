@@ -2,21 +2,89 @@
   display:flex;
   align-items: stretch;
   padding:36px;
-  .merchant-wrap {
-    flex: 1;
-    height:643px;
-    background-color:#fff;
-    .title {
-      height:60px;
-      border-bottom:1px solid #F7F7FB;
-      display:flex;
-      justify-content: space-between;
-      align-items: center;
-      padding:28px;
-      color:#221F51;
+  .left-panel {
+    flex:1;
+    margin-right:28px;
+    display:flex;
+    flex-direction: column;
+    .merchant-wrap {
+      flex:1;
+      margin-top:23px;
+      height:643px;
+      background-color:#fff;
+      border-radius:11px;
+      .title {
+        height:60px;
+        border-bottom:1px solid #F7F7FB;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        padding:0 28px;
+        color:#221F51;
+      }
     }
   }
   .aside-panel {
-
+    width:271px;
+    background:#fff;
+    border-radius:11px;
+    display: flex;
+    flex-direction: column;
+    .merchant-info {
+      padding:0 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .main-title {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      color:#221F51;
+      margin-bottom:16px;
+      span:last-child {
+        color:#888888;
+      }
+    }
+    .title {
+      color:#000000;
+      font-size:14px;
+      padding:8px 0;
+    }
+    .desc {
+      color:#9290B1;
+      padding:8px 0;
+      font-size:12px;
+    }
+    .btn,.btngroup {
+      margin:0 -20px;
+      height:50px;
+      text-align: center;
+      color:#fff;
+      line-height:50px;
+      background:rgba(238,43,123,1);
+      border-radius:0px 0px 11px 11px;
+      -webkit-user-select: none;    
+      cursor: pointer;
+    }
+    .btn:active {
+      box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
+    }
+    .btngroup {
+      margin-top:20px;
+      display:flex;
+      div {
+        width:50%;
+        -webkit-user-select: none;    
+        &:active {
+          box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
+        }
+      }
+    }
+    img {
+      display:block;
+      width:80px;
+      height:80px;
+      margin:0 auto;
+    }
   }
 }

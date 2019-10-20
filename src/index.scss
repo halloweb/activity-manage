@@ -7,6 +7,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color:#f7f7f7;
 }
 
 code {
@@ -46,4 +47,33 @@ code {
       }
     }
   }
+}
+.table-wrap {
+  padding:10px 28px;
+}
+.com-table {
+  width:100%;
+  th {
+    color:#9290B1;
+    height:40px;
+    text-align: center;
+  }
+  td {
+    color:#221F51;
+    text-align: center;
+    &.blod {
+      color:#273964;
+      font-size:18px;
+    }
+  }
+}
+.Pagination-wrap {
+  display:flex;
+  justify-content: flex-end;
+  padding:10px 28px;
+}
+.space-between {
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
 }
