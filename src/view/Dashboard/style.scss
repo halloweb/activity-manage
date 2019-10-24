@@ -92,9 +92,23 @@
                     .voucher-item {
                         height: 73px;
                         border-bottom:1px solid #D9D6E1;
+                        position: relative;
                         .count {
                             font-size:21px;
                             color:#34BFA3;
+                        }
+                        .action {
+                            position: absolute;
+                            bottom:0;
+                            right:0;
+                            display:none;
+                            i {
+                                margin-right:5px;
+                                cursor: pointer;
+                            }
+                        }
+                        &:hover .action {
+                                display:block; 
                         }
                     }
                  }

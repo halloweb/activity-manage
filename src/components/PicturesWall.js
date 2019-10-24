@@ -15,6 +15,8 @@ export default class PicturesWall extends React.Component {
            fileList : [],
            onChange: () => {},
            onRemove: () => {},
+           beforeUpload: () => {},
+           maxCount: 9
          }
   state = {
     previewVisible: false,
@@ -43,15 +45,18 @@ export default class PicturesWall extends React.Component {
     return (
       <div className="clearfix">
         <Upload
-          action={this.props.action}
+          action={`/api/file/uploadFile`}
           listType="picture-card"
+          withCredentials={true}
+          data={this.props.data}
           fileList={this.props.fileList}
           onPreview={this.handlePreview}
           onChange={this.props.onChange}
           onRemove={this.props.onRemove}
+          beforeUpload={this.props.beforeUpload}
           accept=".png, .jpg, .jpeg"
         >
-          {this.props.fileList.length >= 9 ? null : uploadButton}
+          {this.props.fileList.length >= this.props.maxCount ? null : uploadButton}
         </Upload>
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />

@@ -1,24 +1,79 @@
-import React,{useState} from 'react'
-import { Modal, Button, Form, Input, Row, Col } from 'antd';
+import React,{useState, useEffect} from 'react'
+import { Modal, Button, Form, Input, Icon } from 'antd'
+import Model from '../../model'
 function VoucherEdit () {
     const [visible,setVisible] = useState(false)
     const [confirmLoading,setLoading] = useState(false)
-    const [voucherList,setVoucherList] = useState([{name:'aaa',count: '13%'},{name:'aaa',count: '13%'},{name:'aaa',count: '13%'}])
+    const [voucherList,setVoucherList] = useState([])
+    const [activeVoucher,setActiveVoucher] = useState(null)
     const [formRef,saveFormRef] = useState()
+    useEffect(() => {
+      getVoucher()
+    },[])
+    const getVoucher = () => {
+      Model.getVoucherList()
+      .then(({data}) => {
+        if(data.status === 200) {
+          setVoucherList(data.data)
+        }
+      })
+    }
+    const edit = item => {
+      setActiveVoucher(item)
+      setVisible(true)
+    }
+    // 删除
+    const remove = id => {
+      Model.deleteVoucher(id)
+      .then(({data}) => {
+        if(data.status === 200) {
+          getVoucher()
+        }
+      }) 
+    }
+    // 增加
+    const add = () => {
+      setActiveVoucher(null)
+      setVisible(true)
+    }
     const handleOk = () => {
         const { form } = formRef.props
         form.validateFields((err, values) => {
-            console.log('Received values of form: ', values);
+          console.log(activeVoucher)
+            if(activeVoucher) {
+              // 编辑
+              let data = Object.assign(activeVoucher,values)
+              Model.updateVoucher(data)
+                .then(({data}) => {
+                  if(data.status === 200) {
+                    setVisible(false)
+                    getVoucher()
+                  }
+                }) 
+            } else {
+              // 增加
+              Model.addVoucher(values)
+              .then(({data}) => {
+                if(data.status === 200) {
+                  setVisible(false)
+                  getVoucher()
+                }
+              }) 
+            }
         })
     }
     const renderItem = (item,index) => {
            return (
             <div key={index} className="voucher-item topBar">
             <div>
-              <div className="title">{item.name}</div>
+              <div className="title">{item.title}</div>
             </div>
             <div className="count">
-               {item.count}
+               {item.rate}%
+            </div>
+            <div className="action">
+              <Icon onClick={() => edit(item)} type="edit" />
+              <Icon type="close" onClick={() => remove(item.id)}/>
             </div>
            </div>
           )
@@ -27,7 +82,7 @@ function VoucherEdit () {
         <div className="voucher-edit">
             <div className="topBar">
               <div className="title">代金劵</div>
-              <Button type="danger" onClick={() => setVisible(true)} shape="round" className="btn-edit" size="small">编辑</Button>
+              <Button type="danger" onClick={add} shape="round" className="btn-edit" size="small">新增</Button>
             </div>
             <div className="voucherList scrollbar">
               {voucherList.map((item,index) => renderItem(item,index) )}
@@ -37,7 +92,7 @@ function VoucherEdit () {
             visible={visible}
             onCancel={setVisible}
             handleOk={handleOk}
-            voucherList={voucherList}
+            voucher={activeVoucher}
             />
         </div>
     )
@@ -45,9 +100,8 @@ function VoucherEdit () {
 }
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
     class extends React.Component {
-      
       render() {
-        const { visible, handleOk, onCancel, form, voucherList} = this.props
+        const { visible, handleOk, onCancel, form, voucher} = this.props
         const { getFieldDecorator } = form;
         const formItemLayout = {
           labelCol: {
@@ -70,29 +124,36 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
             onOk={handleOk}
           >
             <Form  {...formItemLayout}>
-          { voucherList.map((item,index) => {
-
-            return (<Row gutter={24} key={index}>
-              <Col span={12}>
                 <Form.Item label="名称">
-                  {getFieldDecorator(`voucherList[${index}].name`, {
+                  {getFieldDecorator(`title`, {
                     rules: [{ required: true, message: '代金券名称不能为空' }],
-                    initialValue: item.name
+                    initialValue: voucher ? voucher.title : ''
                   })(<Input />)}
                 </Form.Item>
-              </Col>
-              <Col span={12}>
                 <Form.Item label="抽中比例">
-                {getFieldDecorator(`voucherList[${index}].count`, {
+                {getFieldDecorator(`rate`, {
                     rules: [{ required: true, message: '中奖比例不能为空' }],
-                    initialValue: item.count
+                    initialValue: voucher ? voucher.rate : ''
                   })(<Input />)}
                 </Form.Item>
-              </Col>
-            </Row>
-            )            
-          })
-          }  
+                <Form.Item label="满多少金额">
+                {getFieldDecorator(`withAmount`, {
+                    rules: [{ required: true, message: '中奖比例不能为空' }],
+                    initialValue: voucher ? voucher.withAmount : ''
+                  })(<Input />)}
+                </Form.Item>
+                <Form.Item label="减多少金额">
+                {getFieldDecorator(`usedAmount`, {
+                    rules: [{ required: true, message: '中奖比例不能为空' }],
+                    initialValue: voucher ? voucher.usedAmount : ''
+                  })(<Input />)}
+                </Form.Item>
+                <Form.Item label="自领取之日起有效天数">
+                {getFieldDecorator(`validDays`, {
+                    rules: [{ required: true, message: '中奖比例不能为空' }],
+                    initialValue: voucher ? voucher.validDays : ''
+                  })(<Input />)}
+                </Form.Item>
             </Form>
           </Modal>
         );

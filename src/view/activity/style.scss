@@ -21,7 +21,29 @@
         align-items: center;
         padding:0 28px;
         color:#221F51;
+        &>span {
+          font-size:18px;
+        }
       }
+      tbody tr {
+        &:hover {
+          background: rgba(240, 141, 182, 0.2)
+        }
+        cursor: pointer; 
+      }
+      td {
+        min-width:50px;
+        img {
+          height:44px;
+          width:44px;
+          border-radius: 50%;
+        }
+        i {
+          cursor: pointer;
+          margin-right:5px;
+        }
+      }
+
     }
   }
   .aside-panel {
@@ -30,6 +52,9 @@
     border-radius:11px;
     display: flex;
     flex-direction: column;
+    &.edit-info {
+      padding:25px 20px 0;
+    }
     .merchant-info {
       padding:0 20px;
       display: flex;
@@ -38,12 +63,10 @@
     .main-title {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       font-size: 18px;
       color:#221F51;
       margin-bottom:16px;
-      span:last-child {
-        color:#888888;
-      }
     }
     .title {
       color:#000000;
@@ -80,11 +103,27 @@
         }
       }
     }
-    img {
+    .img-wrap {
+      display:flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      img {
+        width:80px;
+        height:80px;
+        margin-bottom:8px;
+        border:1px dashed rgba(146, 144, 177, .1);
+      }
+    }
+    .img-single {
       display:block;
+      margin: 0 auto;
       width:80px;
       height:80px;
-      margin:0 auto;
+      margin-bottom:8px;
+      border:1px dashed rgba(146, 144, 177, .1);
     }
+  }
+  button+button {
+    margin-left: 10px;
   }
 }

@@ -1,5 +1,5 @@
 import React,{ useState } from 'react'
-import { Radio, Pagination } from 'antd'
+import { Radio, Pagination, Icon } from 'antd'
 import ActivityInfo from './activity-info'
 import './style.scss'
 const tableHead = ['头像','名称','描述','参与商户','开始日期','终止日期','剩余天数']
@@ -30,13 +30,14 @@ function ActivityEdit() {
                   {
                     tableHead.map((item,index) => (<th key={index}>{item}</th>))
                   }
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                  {
                    dataList.map(item => (
                      <tr key={item.id}>
-
+                       <td><Icon type="close" /></td>
                      </tr>
                    ))
                  }
