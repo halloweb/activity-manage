@@ -1,5 +1,5 @@
 import React,{ useState } from 'react'
-import { Radio, Pagination, Tabs, Icon } from 'antd'
+import { Radio, Pagination, Tabs, Spin, message } from 'antd'
 import MerchantInfo from './merchant-info'
 import MerchantAuth from './merchant-auth'
 import CategoryList from './category-list'
@@ -13,23 +13,38 @@ function Details() {
   const [categoryId,setCategoryId] = useState(null)
   const [orderBy,setOrderBy] = useState('buyVoteIncome')
   const [total,setTotal] = useState(0)
-  const changeHandler = (val) => {
-    setOrderBy(val)
-    pageChange(1,{orderBy:val})
+  const [pageNum,setNum] = useState(0)
+  const [loading,setLoading] = useState(false)
+  const changeHandler = (e) => {
+    setOrderBy(e.target.value)
+    pageChange(1,{orderBy:e.target.value})
   }
-  const pageChange = (num,data) => {
-    let params = Object.assign({},{activityId:categoryId,page:num,pageSize: 10,orderBy:orderBy},data)
+  const pageChange = (num,data = {}) => {
+    setLoading(true)
+    num && setNum(num)
+    let params = Object.assign({},{activityId:categoryId,page:num || pageNum,pageSize: 10,orderBy:orderBy},data)
     Model.getBusiness(params)
       .then(({data}) => {
         if(data.status === 200) {
           setTotal(data.data.total)
           setDataList(data.data.list)
+          if (active) {
+            let item = data.data.list.find(v => v.userid === active.userid)
+            item && setActive(item)
+          }  else {
+            // setActive(data.data.list[0])
+          }
         }
       })
+      .finally(() => setLoading(false))
   }
   const categoryChange = (id) => {
-    setCategoryId(id)
-    pageChange(1,{activityId:id})
+    if (id) {
+      setCategoryId(id)
+      pageChange(1,{activityId:id})
+    } else {
+      message.warning('该类型下目前没有活动')
+    }
   }
   return (
     <div className="active-details">
@@ -43,6 +58,7 @@ function Details() {
               <Radio.Button value="registerDate">最新加入</Radio.Button>
             </Radio.Group>
            </div>
+           <Spin spinning={loading} >
            <div className="table-wrap">
             <table className="com-table">
               <thead>
@@ -54,8 +70,8 @@ function Details() {
               </thead>
               <tbody>
                  {
-                   dataList.map(item => (
-                     <tr key={item.userid} onClick={() => setActive(item)}>
+                   dataList.length ? dataList.map(item => (
+                     <tr className={`${active && item.userid === active.userid ? 'active' : null}`} key={item.userid} onClick={() => setActive(item)}>
                        <td><img src={item.avatarurl}/></td>
                        <td>{item.shopName}</td>
                        <td>{item.buyVoteCount}</td>
@@ -64,9 +80,10 @@ function Details() {
                        <td>{item.totalUsedAmount}</td>
                        <td>{item.buyVoteCount}</td>
                        <td>{item.buyVoteIncome}</td>
-                       <td><Icon type="edit" /><Icon type="close" /></td>
                      </tr>
-                   ))
+                   )) : (<tr>
+                           <td colSpan="8">暂无数据</td>
+                        </tr>)
                  }
               </tbody>
             </table>
@@ -74,17 +91,20 @@ function Details() {
            <div className="Pagination-wrap">
              <Pagination size="small" onChange={pageChange} total={total} showTotal={() => `共 ${total} 条`} />
            </div>
+           </Spin>
          </div>
       </div>
       <div className="aside-panel">
-        <Tabs defaultActiveKey="1" tabBarGutter={95} >
+      <Spin spinning={loading} >
+        <Tabs defaultActiveKey="1"  tabBarGutter={95} >
           <TabPane tab="商家信息" key="1">
-            <MerchantInfo info={active}/>
+            {active ? <MerchantInfo pageChange={pageChange}  info={active}/> : '请选择商家' }
           </TabPane>
           <TabPane tab="商家认证" key="2">
-            <MerchantAuth info={active}/>
+            {active ? <MerchantAuth pageChange={pageChange}  info={active}/> : '请选择商家' }
           </TabPane>
         </Tabs>
+        </Spin>
       </div>
     </div>
   )

@@ -67,6 +67,7 @@ function VoucherEdit () {
             <div key={index} className="voucher-item topBar">
             <div>
               <div className="title">{item.title}</div>
+              <div className="subTitle">有效天数:{item.validDays}</div>
             </div>
             <div className="count">
                {item.rate}%

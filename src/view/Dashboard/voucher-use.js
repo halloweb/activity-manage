@@ -16,9 +16,33 @@ let initOption = {
       textStyle: {
           color: '#9290B1',
       },
-      data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+      data:[]
   },
   series: [
+    {
+        name:'使用人数比例',
+        type:'pie',
+        hoverAnimation:false,
+        legendHoverLink: false,
+        radius: ['50%', '70%'],
+        label: {
+            normal: {
+                show: true,
+                position: 'center',
+                color: 'rgba(217, 214, 225, 1)',
+                fontSize: 28
+            }
+        },
+        labelLine: {
+            normal: {
+                show: false
+            }
+        },
+        itemStyle: {
+            color:'rgba(0,0,0,0)'
+        },
+        data:[]
+      },
       {
           name:'代金劵使用比例',
           type:'pie',
@@ -49,25 +73,35 @@ let initOption = {
                   show: true
               }
           },
-          data:[
-              {value:335, name:'直接访问'},
-              {value:310, name:'邮件营销'},
-              {value:234, name:'联盟广告'},
-              {value:135, name:'视频广告'},
-              {value:1548, name:'搜索引擎'}
-          ]
+          data:[]
       }
   ]
 }
 function VoucherUse () {
    const [option,setOption] = useState(initOption)
+   const [data,setData] = useState(initOption)
    useEffect(() => {
-      
-   })
+     Model.voucherUse()
+       .then(({data}) => {
+           if (data.status === 200) {
+               setData(data.data)
+               let opt = option
+               let result = data.data.list.reduce((t,v) => {
+                               t[0].push(v.title)        
+                               t[1].push({value: v.useNumber, name: v.title})
+                               return t     
+                             },[[],[]])
+                opt.legend.data = result[0]    
+                opt.series[1].data = result[1]    
+                opt.series[0].data = [{value: data.data.usedVoucherUserCount,name:`${data.data.usedVoucherUserCount/data.data.voucherUserCount}%`},{value: data.data.voucherUserCount - data.data.usedVoucherUserCount,name: '' }]  
+                setOption(opt)  
+           }
+       })
+   },[])
    return (
        <div className="voucherUse">
          <div className="title">代金劵使用比例</div>
-         <div className="subTitle">共100人</div>
+         <div className="subTitle">共{data.usedVoucherUserCount}人</div>
          <div style={{flex: 1}}>
            <ChartsBase option={option}/>
          </div>

@@ -12,15 +12,33 @@
         background:#fff;
         font-size:18px;
         cursor: pointer;
+        position: relative;
         &.active {
             border-color:#1890ff;
-            color:#1890ff;
+            .content{
+                color:#1890ff;
+            }
+          }  
+        .tool {
+            position: absolute;
+            right:0;
+            top:0;
+            width:22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            height:45px;
         }
     }
 }
 .second-level .item {
     height:30px;
     line-height:30px;
+    &.active{
+        border-color:#1890ff;
+        color:#1890ff;
+    }
 }
 .first-level-edit {
     display:flex;

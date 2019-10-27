@@ -26,7 +26,7 @@
         }
       }
       tbody tr {
-        &:hover {
+        &:hover,&.active {
           background: rgba(240, 141, 182, 0.2)
         }
         cursor: pointer; 
@@ -88,6 +88,10 @@
       border-radius:0px 0px 11px 11px;
       -webkit-user-select: none;    
       cursor: pointer;
+      &.disabled {
+        background:#999;
+        cursor: not-allowed;
+      }
     }
     .btn:active {
       box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
@@ -97,9 +101,19 @@
       display:flex;
       div {
         width:50%;
-        -webkit-user-select: none;    
+        -webkit-user-select: none;
+        &:first-child {
+          border-radius:0px 0px  0 11px;
+        }
+        &:last-child {
+          border-radius:0px 0px 11px 0;
+        }   
         &:active {
           box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
+        }
+        &.disabled {
+          background:#999;
+          cursor: not-allowed;
         }
       }
     }

@@ -15,6 +15,21 @@ const Model = {
             }
         })     
     },
+    updateActivityType (data) {
+        return flyio.post($url.updateActivityType,data,{headers:{
+            "content-type":"application/x-www-form-urlencoded"
+        }})
+    },
+    deleteActivityType (id) {
+        return flyio.post($url.deleteActivityType,{bigActivityId: id},{headers:{
+            "content-type":"application/x-www-form-urlencoded"
+        }})
+    },
+    addActivityType (data) {
+        return flyio.post($url.addActivityType,data,{headers:{
+            "content-type":"application/x-www-form-urlencoded"
+        }})
+    },
     getSmallActivity (id,status='1') {
         return flyio.get($url.getSmallActivity,{bigActivityId: id, status: status})
         .then(({data}) => {
@@ -36,7 +51,9 @@ const Model = {
           })
     },
     deleteBanner (id) {
-        return flyio.post($url.deleteBanner,{bannerId:id})
+        return flyio.post($url.deleteBanner,{bannerId:id},{headers:{
+            "content-type":"application/x-www-form-urlencoded"
+        }})
     },
     addBanner (data) {
         return flyio.post($url.addBanner,data)
@@ -45,15 +62,17 @@ const Model = {
         return flyio.post($url.updateActivity,data)
     },
     suspendActivity (id) {
-       flyio.post($url.updateActivity,{activityId: id})
-         .then(({data}) => {
-             if(data.status === 200) {
-                message.success('活动挂起成功')
-             } else {
-                message.error('活动挂起失败') 
-             }
-         })
-         .catch(() => message.error('活动挂起失败'))          
+       return flyio.post($url.suspendActivity,{activityId: id,status: 0},{headers:{
+        "content-type":"application/x-www-form-urlencoded"
+    }})       
+    },
+    addActivity(data) {
+        return flyio.post($url.addActivity,data) 
+    },
+    deleteActivity(data) {
+        return flyio.post($url.deleteActivity,data,{headers:{
+            "content-type":"application/x-www-form-urlencoded"
+        }})
     },
     getVoucherList() {
         return flyio.get($url.voucherList)
@@ -69,6 +88,27 @@ const Model = {
     },
     getBusiness(params) {
         return flyio.get($url.getBusiness,params)
+    },
+    merchantEdit(data) {
+        return flyio.post($url.merchantEdit,data,{headers:{
+            "content-type":"application/x-www-form-urlencoded"
+        }})
+    },
+    setBusinessUserState(id) {
+        return flyio.post($url.setBusinessUserState,{businessId:id,status:2})    
+    },
+    certification(data) {
+        return flyio.post($url.certification,data,{headers:{
+            "content-type":"application/x-www-form-urlencoded"
+        }})
+    },
+    merchantAudit(data) {
+        return flyio.post($url.merchantAudit,data,{headers:{
+            "content-type":"application/x-www-form-urlencoded"
+        }})  
+    },
+    voucherUse() {
+        return flyio.get($url.voucherUse)
     }
 
 }
