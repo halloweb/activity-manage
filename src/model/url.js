@@ -15,6 +15,8 @@ const $url = {
     deleteActivity: `${baseUrl}/api/smallActivity/delete`, // 删除活动
     voucherList: `${baseUrl}/api/vote/voucher/selectAll`, // 获取代金券列表
     voucherUse: `${baseUrl}/api/admin/count/voucher`, // 代金券使用比例
+    getAllUserCount: `${baseUrl}/api/admin/getAllUserCount`, // 获取总用户量
+    getUserLoginCount: `${baseUrl}/api/admin/getUserLoginCount`, // 活跃用户统计
     deleteVoucher: `${baseUrl}/api/vote/voucher/delete`, // 删除代金券
     updateVoucher: `${baseUrl}/api/vote/voucher/update`, // 更新代金券
     addVoucher: `${baseUrl}/api/vote/voucher/add`, // 更新代金券
@@ -23,5 +25,8 @@ const $url = {
     setBusinessUserState: `${baseUrl}/api/admin/setBusinessUserState`, // 挂起商户
     certification: `${baseUrl}/api/user/merchant/certification`, // 商户认证信息编辑
     merchantAudit: `${baseUrl}/api/user/merchant/audit`, // 商户认证状态修改
+    selectTopUpWithCount: `${baseUrl}/api/admin/topUp/selectTopUpWithCount`, // 获取充值产品列表
+    updateTopUpWithCount: `${baseUrl}/api/admin/topUp/update`, // 修改或删除充值产品
+    insertTopUpWithCount: `${baseUrl}/api/admin/topUp/insert` // 增加充值产品
 }
 export default $url

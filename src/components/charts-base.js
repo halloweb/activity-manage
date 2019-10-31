@@ -18,8 +18,9 @@ function ChartsBase (props) {
         })
     },[props.option])
     useEffect(() => {
+        console.log(props.option)
         myChart && myChart.setOption(props.option)
-    },[myChart, props.option])
+    },[myChart, props.optChange, props.option])
     return (
         <div className="chart-base" ref={ChartEl}></div>
     )

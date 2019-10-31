@@ -5,11 +5,11 @@ const colorList = ['#00C5DC','#FFB822','#716ACA','#C33531','#EFE42A','#64BD3D','
 let initOption = {
   tooltip: {
       trigger: 'item',
-      formatter: "{a} <br/>{b}: {c} ({d}%)"
+      formatter: "{a} <br/>{b}:({d}%)"
   },
   legend: {
       orient: 'vertical',
-      right: '20%',
+      right: '10%',
       top:'middle',
       icon: 'circle',
       align: 'left',
@@ -24,7 +24,8 @@ let initOption = {
         type:'pie',
         hoverAnimation:false,
         legendHoverLink: false,
-        radius: ['50%', '70%'],
+        center: ['25%', '50%'],
+        radius: ['50%', '80%'],
         label: {
             normal: {
                 show: true,
@@ -55,7 +56,7 @@ let initOption = {
                   position: 'center'
               },
               emphasis: {
-                  show: true,
+                  show: false,
                   formatter: "{b}\n{d}%",
                   textStyle: {
                       fontSize: '16',
@@ -80,6 +81,7 @@ let initOption = {
 function VoucherUse () {
    const [option,setOption] = useState(initOption)
    const [data,setData] = useState(initOption)
+   const [optChange,setOptChange] = useState(false)
    useEffect(() => {
      Model.voucherUse()
        .then(({data}) => {
@@ -87,23 +89,32 @@ function VoucherUse () {
                setData(data.data)
                let opt = option
                let result = data.data.list.reduce((t,v) => {
-                               t[0].push(v.title)        
-                               t[1].push({value: v.useNumber, name: v.title})
+                               if (v.useNumber) {
+                                t[0].push(`${v.title}`)        
+                                t[1].push({value: v.useNumber, name: v.title})
+                               }
                                return t     
                              },[[],[]])
-                opt.legend.data = result[0]    
+                opt.legend.data = result[0]
+                opt.legend.formatter = function(name) {
+                    let item = data.data.list.find(v => v.title === name)
+                    return `${name} ${item.useRate}`
+                }
                 opt.series[1].data = result[1]    
-                opt.series[0].data = [{value: data.data.usedVoucherUserCount,name:`${data.data.usedVoucherUserCount/data.data.voucherUserCount}%`},{value: data.data.voucherUserCount - data.data.usedVoucherUserCount,name: '' }]  
-                setOption(opt)  
+                opt.series[0].data = [{value: data.data.usedVoucherUserCount,name:`${data.data.usedVoucherUserCount/data.data.voucherUserCount*100}%`},{value: data.data.voucherUserCount - data.data.usedVoucherUserCount,name: '' }]  
+                setOption(opt)
+                console.log()
+                setOptChange(!optChange)
            }
        })
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    },[])
    return (
        <div className="voucherUse">
          <div className="title">代金劵使用比例</div>
          <div className="subTitle">共{data.usedVoucherUserCount}人</div>
          <div style={{flex: 1}}>
-           <ChartsBase option={option}/>
+           <ChartsBase optChange={optChange} option={option}/>
          </div>
        </div>
    )

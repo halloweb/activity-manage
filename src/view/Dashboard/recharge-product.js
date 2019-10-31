@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react'
-import { Modal, Form, Input, Icon } from 'antd'
+import { Modal, Form, Input, Icon, InputNumber } from 'antd'
 import Model from '../../model'
-function VoucherEdit () {
+function RechargeProduct () {
     const [visible,setVisible] = useState(false)
     const [voucherList,setVoucherList] = useState([])
     const [activeVoucher,setActiveVoucher] = useState(null)
@@ -10,7 +10,7 @@ function VoucherEdit () {
       getVoucher()
     },[])
     const getVoucher = () => {
-      Model.getVoucherList()
+      Model.selectTopUpWithCount()
       .then(({data}) => {
         if(data.status === 200) {
           setVoucherList(data.data)
@@ -23,7 +23,7 @@ function VoucherEdit () {
     }
     // 删除
     const remove = id => {
-      Model.deleteVoucher(id)
+      Model.updateTopUpWithCount({id:id,status: 0})
       .then(({data}) => {
         if(data.status === 200) {
           getVoucher()
@@ -42,7 +42,7 @@ function VoucherEdit () {
             if(activeVoucher) {
               // 编辑
               let data = Object.assign(activeVoucher,values)
-              Model.updateVoucher(data)
+              Model.updateTopUpWithCount(data)
                 .then(({data}) => {
                   if(data.status === 200) {
                     setVisible(false)
@@ -51,7 +51,7 @@ function VoucherEdit () {
                 }) 
             } else {
               // 增加
-              Model.addVoucher(values)
+              Model.insertTopUpWithCount(values)
               .then(({data}) => {
                 if(data.status === 200) {
                   setVisible(false)
@@ -66,10 +66,11 @@ function VoucherEdit () {
             <div key={index} className="voucher-item topBar">
             <div>
               <div className="title">{item.title}</div>
-              <div className="subTitle">有效天数:{item.validDays}</div>
+              <div className="subTitle">现价:{item.price} 原价:{item.originalPrice} {item.ticketNum}张</div>
             </div>
-            <div className="count">
-               {item.rate}%
+            <div className="count status">
+               <div>已售:{item.buyCount}张</div>
+               {item.status === 1 ? <span>生效中</span> : <span className="disabled">已停用</span>}
             </div>
             <div className="action">
               <Icon onClick={() => edit(item)} type="edit" />
@@ -118,7 +119,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
           <Modal
             visible={visible}
             bodyStyle={{maxHeight: '400px',overflow: 'auto'}}
-            title="代金券编辑"
+            title="充值卡编辑"
             cancelText="取消"
             okText="确定"
             onCancel={() => onCancel(false)}
@@ -127,33 +128,33 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
             <Form  {...formItemLayout}>
                 <Form.Item label="名称">
                   {getFieldDecorator(`title`, {
-                    rules: [{ required: true, message: '代金券名称不能为空' }],
+                    rules: [{ required: true, message: '充值卡名称不能为空' }],
                     initialValue: voucher ? voucher.title : ''
                   })(<Input />)}
                 </Form.Item>
-                <Form.Item label="抽中比例">
-                {getFieldDecorator(`rate`, {
-                    rules: [{ required: true, message: '中奖比例不能为空' }],
-                    initialValue: voucher ? voucher.rate : ''
-                  })(<Input />)}
+                <Form.Item label="现价">
+                {getFieldDecorator(`price`, {
+                    rules: [{ required: true, message: '现价不能为空' }],
+                    initialValue: voucher ? voucher.price : 0
+                  })(<InputNumber min={0} />)}
                 </Form.Item>
-                <Form.Item label="满多少金额">
-                {getFieldDecorator(`withAmount`, {
+                <Form.Item label="原价">
+                {getFieldDecorator(`originalPrice`, {
                     rules: [{ required: true, message: '中奖比例不能为空' }],
-                    initialValue: voucher ? voucher.withAmount : ''
-                  })(<Input />)}
+                    initialValue: voucher ? voucher.originalPrice : 0
+                  })(<InputNumber  min={0} />)}
                 </Form.Item>
-                <Form.Item label="减多少金额">
-                {getFieldDecorator(`usedAmount`, {
+                <Form.Item label="票数">
+                {getFieldDecorator(`ticketNum`, {
                     rules: [{ required: true, message: '中奖比例不能为空' }],
-                    initialValue: voucher ? voucher.usedAmount : ''
-                  })(<Input />)}
+                    initialValue: voucher ? voucher.ticketNum : 0
+                  })(<InputNumber min={0} />)}
                 </Form.Item>
-                <Form.Item label="自领取之日起有效天数">
-                {getFieldDecorator(`validDays`, {
-                    rules: [{ required: true, message: '中奖比例不能为空' }],
-                    initialValue: voucher ? voucher.validDays : ''
-                  })(<Input />)}
+                <Form.Item label="状态">
+                {getFieldDecorator(`status`, {
+                    rules: [{ required: true, message: '状态' }],
+                    initialValue: voucher ? voucher.status : 1
+                  })(<InputNumber  min={0} max={1} step={1}/>)}
                 </Form.Item>
             </Form>
           </Modal>
@@ -161,4 +162,4 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
       }
     },
   );
-export default VoucherEdit
+export default RechargeProduct

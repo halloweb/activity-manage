@@ -1,6 +1,7 @@
 import React,{ useState, useEffect } from 'react'
 import ChartsBase from '../../components/charts-base.js'
 import { Radio } from 'antd'
+import Model from '../../model/index.js'
 let initOption = {
     tooltip : {
         trigger: 'axis',
@@ -23,7 +24,7 @@ let initOption = {
         type: 'value'
     },
     series: [{
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        data: [],
         type: 'line',
         smooth: true,
         symbol: 'none',
@@ -34,28 +35,52 @@ let initOption = {
     }]
 }
 function ActiveUser () {
-   const [option,setOption] = useState(initOption)
+    const [option,setOption] = useState(initOption)
+    const [data,setData] = useState([])
+    const [average,setAverage] = useState(0)
+    const [selected,setSelect] = useState('dayList')
+    const [optChange,setOptChange] = useState(false)
    useEffect(() => {
-      
-   })
+     Model.getUserLoginCount()
+       .then(({data}) => {
+           if(data.status === 200) {
+               setData(data.data)
+               changeData({d:data.data})
+           }
+       }) 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [])
+   const changeData = ({d,s}) => {
+    let datas = d || data
+    let opt = option
+    opt.series[0].data = datas[s||selected].map(v => v.dayCount === undefined ? v.monthCount : v.dayCount )
+    let total = opt.series[0].data.reduce((t,v) => {
+       t += v
+       return t 
+    }, 0)
+    setAverage(Math.floor(total/opt.series[0].data.length))
+    setOption(opt)
+    setOptChange(!optChange)
+   }
    const changeHandler = (v) => {
-
+      setSelect(v.target.value)
+      changeData({s:v.target.value})
    }
    return (
        <div className="active-user">
        <div className="topBar">
            <div className="title">活跃用户量</div>
-           <Radio.Group defaultValue="DAY" onChange={changeHandler} buttonStyle="solid">
-            <Radio.Button value="DAY"> DAY </Radio.Button>
-            <Radio.Button value="MONTH">MONTH</Radio.Button>
+           <Radio.Group defaultValue="dayList" onChange={changeHandler} buttonStyle="solid">
+            <Radio.Button value="dayList"> DAY </Radio.Button>
+            <Radio.Button value="monthList">MONTH</Radio.Button>
            </Radio.Group>
        </div>
          <div style={{flex: 1}}>
-           <ChartsBase option={option}/>
+           <ChartsBase optChange={optChange} option={option}/>
          </div>
        <div className="bottom">
-          <div>单日日活：760,000</div>
-          <div>平均日活：30,000</div>
+          {/* <div>单{selected}{selected}活：760,000</div> */}
+          <div>平均{selected === 'monthList'? '月': '日' }活：{average}</div>
        </div>
        </div>
    )

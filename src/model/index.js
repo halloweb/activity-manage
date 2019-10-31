@@ -109,6 +109,21 @@ const Model = {
     },
     voucherUse() {
         return flyio.get($url.voucherUse)
+    },
+    getAllUserCount() {
+        return flyio.get($url.getAllUserCount)
+    },
+    getUserLoginCount() {
+        return flyio.get($url.getUserLoginCount)
+    },
+    selectTopUpWithCount() {
+        return flyio.get($url.selectTopUpWithCount)
+    },
+    updateTopUpWithCount(data) {
+        return flyio.post($url.updateTopUpWithCount,data)
+    },
+    insertTopUpWithCount(data) {
+        return flyio.post($url.insertTopUpWithCount,data)
     }
 
 }

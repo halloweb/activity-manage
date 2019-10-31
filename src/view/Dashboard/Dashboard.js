@@ -3,10 +3,12 @@ import './style.scss'
 import VoucherUse from './voucher-use'
 import ActiveUser from './active-user'
 import VoucherEdit from './voucher-edit'
+import RechargeProduct from './recharge-product'
 import PicturesWall from '../../components/PicturesWall'
 import UserAmount from './user-amount'
 import Model from '../../model'
-import {Modal, Input, message} from 'antd'
+import {Modal, Input, message, Tabs, } from 'antd'
+const { TabPane } = Tabs
 function Dashboard () {
      const [fileList,setFile] = useState([])
      const [visible,setVisible] = useState(false)
@@ -44,13 +46,20 @@ function Dashboard () {
          <div className="dashboard">
             <div className="row">
               <div className="panel">
-                <UserAmount/>
+              <UserAmount/>
               </div>
               <div className="panel voucher">
               <VoucherUse/>
               </div>
-              <div className="panel panel_aside">
-              <VoucherEdit/> 
+              <div className="panel panel_aside" style={{padding:'0 25px'}}>
+              <Tabs defaultActiveKey="1">
+                <TabPane tab="代金券" key="1">
+                  <VoucherEdit/> 
+                </TabPane>
+                <TabPane tab="充值产品" key="2">
+                  <RechargeProduct/>
+                </TabPane>
+              </Tabs>
               </div>
             </div>
             <div className="row">

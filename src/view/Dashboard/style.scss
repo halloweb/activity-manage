@@ -87,7 +87,7 @@
                     font-size:12px;
                 }
                 .voucherList {
-                    flex:1;
+                    height:220px;
                     overflow: auto;
                     .voucher-item {
                         height: 73px;
@@ -96,6 +96,12 @@
                         .count {
                             font-size:21px;
                             color:#34BFA3;
+                            &.status {
+                                font-size:14px;
+                                .disabled {
+                                    color:#D9D6E1;
+                                }
+                            }
                         }
                         .action {
                             position: absolute;
