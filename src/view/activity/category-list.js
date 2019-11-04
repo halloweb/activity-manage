@@ -22,7 +22,7 @@ function CategoryList (props) {
                         item[index].children = res
                         setCategory(item)
                         props.categoryChange(item[index])
-                        props.secondChange && props.secondChange(res[activeSecond].id) 
+                        props.secondChange && props.secondChange(res[0].id) 
                     } else {
                         props.categoryChange(categoryList[index])
                         props.secondChange(null)
@@ -34,6 +34,7 @@ function CategoryList (props) {
         setActiveSecond(index)
         props.secondChange(id)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const getCategory = (i) => {
             Model.getBigActivity()
             .then(data => {
@@ -64,7 +65,7 @@ function CategoryList (props) {
                 if(data.status === 200) {
                     setVisible(false)
                     getCategory()
-                }
+                } 
                 })
             :   Model.updateActivityType({activityId:editContent.id,...values})
                 .then(({data}) => {
@@ -96,6 +97,7 @@ function CategoryList (props) {
         let index = sessionStorage.getItem('activeIndex')
         if (index) setActiveIndex(Number(index))
         getCategory(Number(index))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     return(
         <div>

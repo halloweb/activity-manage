@@ -1,5 +1,5 @@
 import React,{ useState } from 'react'
-import { Modal, Button, Form, Input} from 'antd';
+import { Modal, Button, Form, Input, message} from 'antd';
 import Model from '../../model'
 import PicturesWall from '../../components/PicturesWall'
 const { TextArea } = Input
@@ -18,16 +18,20 @@ function MerchantInfo(props) {
               if(data.status === 200) {
                 setVisible(false)
                 props.pageChange()
+              }  else {
+                message.error(data.msg)
               }
             })
         })
     }
     const hang = () => {
-      if(props.info.userStatus === 2) return
-      Model.setBusinessUserState(props.info.userid)
+      let status = props.info.userStatus === 2 ? 1 : 2 
+      Model.setBusinessUserState({businessId: props.info.userid,status: status})
         .then(({data}) => {
           if(data.status === 200) {
             props.pageChange()
+          } else {
+            message.error(data.msg)
           }
         })
     }
@@ -56,13 +60,13 @@ function MerchantInfo(props) {
                   }
                 </div>
             </div>
-            <div className={`btn ${props.info.userStatus === 2 ? 'disabled' : null}`} onClick={hang}>挂起</div>
+            <div className="btn" onClick={hang}>{props.info.userStatus === 1 ? '挂起' : '上线'}</div>
             <CollectionCreateForm
             wrappedComponentRef={saveFormRef}
             visible={visible}
             onCancel={setVisible}
             handleOk={handleOk}
-            key={props.info.id}
+            key={props.info.userid}
             info={props.info}
             />
         </div>
@@ -99,6 +103,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
       componentDidMount(){ // 父组件重传props时就会调用这个方法
         console.log(this.props.info.shopImages)
         if (this.props.info.shopImages) {
+          console.log(this.props.info.shopImages)
           let result = JSON.parse(this.props.info.shopImages).map((v,index) => {
                       let item = {}
                       item.uid = '-' + index
@@ -144,13 +149,13 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                   {getFieldDecorator(`shopAddress`, {
                     rules: [{ required: true, message: '请填写店铺地址' }],
                     initialValue: info.shopAddress || ''
-                  })(<TextArea autosize={{ minRows: 3, maxRows: 5 }}/>)}
+                  })(<TextArea autoSize={{ minRows: 3, maxRows: 5 }}/>)}
                 </Form.Item> 
                 <Form.Item label="店铺联系方式">
                   {getFieldDecorator(`shopContact`, {
                     rules: [{ required: true, message: '请填写店铺联系' }],
                     initialValue: info.shopContact || ''
-                  })(<TextArea autosize={{ minRows: 3, maxRows: 5 }}/>)}
+                  })(<TextArea autoSize={{ minRows: 3, maxRows: 5 }}/>)}
                 </Form.Item> 
                 <Form.Item label="店铺营业时间">
                   {getFieldDecorator(`shopHours`, {
@@ -162,7 +167,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                   {getFieldDecorator(`shopDesc`, {
                     rules: [{ required: true, message: '请填写店铺描述' }],
                     initialValue: info.shopDesc || ''
-                  })(<TextArea autosize={{ minRows: 3, maxRows: 5 }}/>)}
+                  })(<TextArea autoSize={{ minRows: 3, maxRows: 5 }}/>)}
                 </Form.Item>
                 <Form.Item label="店铺照片">
                   {getFieldDecorator('shopImage', {

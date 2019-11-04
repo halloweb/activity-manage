@@ -74,7 +74,7 @@ function Details() {
                      <tr className={`${active && item.userid === active.userid ? 'active' : null}`} key={item.userid} onClick={() => setActive(item)}>
                        <td><img src={item.avatarurl}/></td>
                        <td>{item.shopName}</td>
-                       <td>{item.buyVoteCount}</td>
+                       <td>{item.voteCount}</td>
                        <td>{item.totalVoucherCount}</td>
                        <td>{item.usedVoucherCount}</td>
                        <td>{item.totalUsedAmount}</td>

@@ -17,6 +17,7 @@ function ActivityEdit() {
     e.target.value === '最新' ? setDataList(byCreate(dataList)) : setDataList(byEnd(dataList))
   }
   const categoryChange = (item) => {
+    if (!item) return
     setCategoryId(item.id)
     let list = item.children || []
     list.length ? orderBy === '最新' ? setDataList(byCreate(list)) : setDataList(byEnd(list)) : setDataList([])
@@ -47,8 +48,8 @@ function ActivityEdit() {
       if (data.status === 200) {
         message.success('删除成功')
         update()
-      } else {
-        message.error('删除成功')
+      }  else {
+        message.error(data.msg)
       }
     })
       .catch(() => message.error('删除成功'))

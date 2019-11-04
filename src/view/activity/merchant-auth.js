@@ -1,5 +1,5 @@
 import React,{ useState } from 'react'
-import { Modal, Button, Form, Input} from 'antd';
+import { Modal, Button, Form, Input, message} from 'antd';
 import PicturesWall from '../../components/PicturesWall'
 import Model from '../../model'
 MerchantAuth.defaultProps = {
@@ -17,6 +17,8 @@ function MerchantAuth(props) {
               if(data.status === 200) {
                 setVisible(false)
                 props.pageChange()
+              }  else {
+                message.error(data.msg)
               }
             })
         })
@@ -27,6 +29,8 @@ function MerchantAuth(props) {
         .then(({data}) => {
           if(data.status === 200) {
             props.pageChange()
+          } else {
+            message.error(data.msg)
           }
         })
     }

@@ -18,15 +18,15 @@ function ActivityInfo(props) {
       values.endTime = values.endTime.format("YYYY-MM-DD HH:mm:ss")
       setLoading(true)
       if (Object.keys(editContent).length) {
-        let data = Object.assign(props.info, values)
+        let data = Object.assign({},props.info, values)
         Model.updateActivity(data)
           .then(({ data }) => {
             if (data.status === 200) {
               setVisible(false)
               message.success('修改成功')
               props.update && props.update()
-            } else {
-              message.error('修改失败')
+            }  else {
+              message.error(data.msg)
             }
           })
           .catch(() => message.error('修改失败'))
@@ -38,8 +38,8 @@ function ActivityInfo(props) {
               setVisible(false)
               message.success('添加成功')
               props.update && props.update()
-            } else {
-              message.error('添加失败')
+            }  else {
+              message.error(data.msg)
             }
           })
           .catch(() => message.error('添加失败'))
@@ -48,16 +48,16 @@ function ActivityInfo(props) {
     })
   }
   const suspend = () => {
-    props.info.activityStatus !== 0 
-    && Model.suspendActivity(props.info.id).then(({data}) => {
+    let status = props.info.activityStatus === 1 ? 0 : 1
+    Model.suspendActivity({activityId: props.info.id,status: status}).then(({data}) => {
       if(data.status === 200) {
-         message.success('活动挂起成功')
+         message.success('成功')
          props.update && props.update()
-      } else {
-         message.error('活动挂起失败') 
+      }  else {
+        message.error(data.msg)
       }
       })
-      .catch(() => message.error('活动挂起失败'))   
+      .catch(() => message.error('活动操作失败'))   
   }
   const edit = () => {
     setEditContent(props.info)
@@ -93,7 +93,7 @@ function ActivityInfo(props) {
         <img src={props.info.activityIcon} />
       </div>
     </div>
-    {Object.keys(props.info).length ? <div className={`btn ${props.info.activityStatus === 0 ? 'disabled' : null}`} onClick={suspend}>挂起</div> :null}
+    {Object.keys(props.info).length ? <div className='btn' onClick={suspend}>{props.info.activityStatus === 1 ? '挂起' : '上线'}</div> :null}
     <CollectionCreateForm
       wrappedComponentRef={saveFormRef}
       visible={visible}

@@ -30,8 +30,8 @@ const Model = {
             "content-type":"application/x-www-form-urlencoded"
         }})
     },
-    getSmallActivity (id,status='1') {
-        return flyio.get($url.getSmallActivity,{bigActivityId: id, status: status})
+    getSmallActivity (id) {
+        return flyio.get($url.getSmallActivity,{typeId: id})
         .then(({data}) => {
             if(data.status === 200) {
                 return data.data
@@ -61,8 +61,8 @@ const Model = {
     updateActivity (data) {
         return flyio.post($url.updateActivity,data)
     },
-    suspendActivity (id) {
-       return flyio.post($url.suspendActivity,{activityId: id,status: 0},{headers:{
+    suspendActivity (data) {
+       return flyio.post($url.suspendActivity,data,{headers:{
         "content-type":"application/x-www-form-urlencoded"
     }})       
     },
@@ -87,15 +87,21 @@ const Model = {
         return flyio.post($url.addVoucher,data)
     },
     getBusiness(params) {
-        return flyio.get($url.getBusiness,params)
+        if (params.orderBy !== 'registerDate') {
+            return flyio.get($url.getBusiness,params) 
+        } else {
+            let {activityId,orderBy,...rest} = params
+            return  flyio.get($url.selectBusinessUsersNewest,rest)
+        }
     },
     merchantEdit(data) {
         return flyio.post($url.merchantEdit,data,{headers:{
             "content-type":"application/x-www-form-urlencoded"
         }})
     },
-    setBusinessUserState(id) {
-        return flyio.post($url.setBusinessUserState,{businessId:id,status:2})    
+    setBusinessUserState(data) {
+        console.log(data)
+        return flyio.post($url.setBusinessUserState,data)
     },
     certification(data) {
         return flyio.post($url.certification,data,{headers:{

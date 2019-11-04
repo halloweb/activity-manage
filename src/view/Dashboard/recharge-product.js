@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react'
-import { Modal, Form, Input, Icon, InputNumber } from 'antd'
+import { Modal, Form, Input, Icon, InputNumber, message } from 'antd'
 import Model from '../../model'
 function RechargeProduct () {
     const [visible,setVisible] = useState(false)
@@ -14,6 +14,8 @@ function RechargeProduct () {
       .then(({data}) => {
         if(data.status === 200) {
           setVoucherList(data.data)
+        } else {
+          message.error(data.msg)
         }
       })
     }
@@ -27,6 +29,8 @@ function RechargeProduct () {
       .then(({data}) => {
         if(data.status === 200) {
           getVoucher()
+        } else {
+          message.error(data.msg)
         }
       }) 
     }
@@ -41,12 +45,14 @@ function RechargeProduct () {
           console.log(activeVoucher)
             if(activeVoucher) {
               // 编辑
-              let data = Object.assign(activeVoucher,values)
+              let data = Object.assign({},activeVoucher,values)
               Model.updateTopUpWithCount(data)
                 .then(({data}) => {
                   if(data.status === 200) {
                     setVisible(false)
                     getVoucher()
+                  } else {
+                    message.error(data.msg)
                   }
                 }) 
             } else {
@@ -56,6 +62,8 @@ function RechargeProduct () {
                 if(data.status === 200) {
                   setVisible(false)
                   getVoucher()
+                } else {
+                  message.error(data.msg)
                 }
               }) 
             }
