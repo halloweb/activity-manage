@@ -101,9 +101,8 @@ function VoucherUse () {
                     return `${name} ${item.useRate}`
                 }
                 opt.series[1].data = result[1]    
-                opt.series[0].data = [{value: data.data.usedVoucherUserCount,name:`${data.data.usedVoucherUserCount/data.data.voucherUserCount*100}%`},{value: data.data.voucherUserCount - data.data.usedVoucherUserCount,name: '' }]  
+                opt.series[0].data = [{value: data.data.usedVoucherUserCount,name:`${(data.data.usedVoucherUserCount/data.data.voucherUserCount*100).toFixed(2)}%`},{value: data.data.voucherUserCount - data.data.usedVoucherUserCount,name: '' }]  
                 setOption(opt)
-                console.log()
                 setOptChange(!optChange)
            }
        })

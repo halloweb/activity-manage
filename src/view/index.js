@@ -5,6 +5,9 @@ import { Link, Route } from "react-router-dom"
 import Dashboard from "./Dashboard/Dashboard"
 import ActivityDetails from './activity/Details'
 import ActivityEdit from './activity/activity-edit'
+import PromoterInfo from './promoter-info'
+import Customer from './customer'
+import DataAnalysis from './promoter-info/data-analysis'
 const { Header, Sider, Content } = Layout
 function View({ match }) {
     const [collapsed, setCollapsed] = useState(true)
@@ -30,6 +33,24 @@ function View({ match }) {
               <span>活动编辑</span>
               </Link>
             </Menu.Item>
+            <Menu.Item key="promoterInfo">
+            <Link to="/view/promoterInfo"> 
+              <Icon type="notification" />
+              <span>推广人员信息</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="customer">
+            <Link to="/view/customer"> 
+              <Icon type="user" />
+              <span>用户信息</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="dataAnalysis">
+            <Link to="/view/dataAnalysis"> 
+              <Icon type="pie-chart" />
+              <span>用户数据分析</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout>
@@ -44,6 +65,9 @@ function View({ match }) {
             <Route path="/view/dashboard" component={Dashboard}/>
             <Route path="/view/activityDetails" component={ActivityDetails}/>
             <Route path="/view/activityInfo" component={ActivityEdit}/>
+            <Route path="/view/promoterInfo" component={PromoterInfo}/>
+            <Route path="/view/customer" component={Customer}/>
+            <Route path="/view/dataAnalysis" component={DataAnalysis}/>
           </Content>
         </Layout>
       </Layout>
