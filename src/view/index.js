@@ -21,17 +21,17 @@ function View({ match }) {
                 <span>主页</span>
             </Link>
             </Menu.Item>
-            <Menu.Item key="activityDetails">
-            <Link to="/view/activityDetails">  
-              <Icon type="table" />
-              <span>活动详情</span>
-            </Link>
-            </Menu.Item>
             <Menu.Item key="activityInfo">
             <Link to="/view/activityInfo"> 
               <Icon type="edit" />
               <span>活动编辑</span>
               </Link>
+            </Menu.Item>
+            <Menu.Item key="activityDetails">
+            <Link to="/view/activityDetails">  
+              <Icon type="table" />
+              <span>商家活动详情</span>
+            </Link>
             </Menu.Item>
             <Menu.Item key="promoterInfo">
             <Link to="/view/promoterInfo"> 

@@ -49,7 +49,7 @@ function Details() {
   return (
     <div className="active-details">
       <div className="left-panel">
-         <CategoryList secondChange={categoryChange}/>
+         <CategoryList type="1" secondChange={categoryChange}/>
          <div className="merchant-wrap">
            <div className="title">
              <span>活动参与商</span>
@@ -89,7 +89,7 @@ function Details() {
             </table>
            </div>
            <div className="Pagination-wrap">
-             <Pagination size="small" onChange={pageChange} total={total} showTotal={() => `共 ${total} 条`} />
+             <Pagination size="small" current={pageNum} onChange={pageChange} total={total} showTotal={() => `共 ${total} 条`} />
            </div>
            </Spin>
          </div>
@@ -104,7 +104,7 @@ function Details() {
             {active ? <MerchantAuth pageChange={pageChange}  info={active}/> : '请选择商家' }
           </TabPane>
         </Tabs>
-        </Spin>
+      </Spin>
       </div>
     </div>
   )

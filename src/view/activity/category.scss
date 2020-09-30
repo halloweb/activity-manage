@@ -1,6 +1,10 @@
+.type-radio-list {
+    margin-bottom:10px;
+}
 .first-level,.second-level {
     display:flex;
     align-items: center;
+    flex-wrap: wrap;
     .item {
         padding:0 22px;
         height:45px;

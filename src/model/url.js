@@ -28,6 +28,7 @@ const $url = {
     merchantAudit: `${baseUrl}/api/user/merchant/audit`, // 商户认证状态修改
     selectTopUpWithCount: `${baseUrl}/api/admin/topUp/selectTopUpWithCount`, // 获取充值产品列表
     updateTopUpWithCount: `${baseUrl}/api/admin/topUp/update`, // 修改或删除充值产品
-    insertTopUpWithCount: `${baseUrl}/api/admin/topUp/insert` // 增加充值产品
+    insertTopUpWithCount: `${baseUrl}/api/admin/topUp/insert`, // 增加充值产品
+    getUsersByActivityId: `${baseUrl}/api/smallActivity/admin/getUsersByActivityId` // 后台-某活动（个人或社团）下的参与人信息列表
 }
 export default $url

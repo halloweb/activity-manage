@@ -1,6 +1,7 @@
 import React,{ useState } from 'react'
 import { Radio, Pagination, Tabs, Spin, message } from 'antd'
 import Info from './info'
+import PromoteList from './promote-list'
 import Model from '../../model'
 const { TabPane } = Tabs
 const tableHead = ['头像','名称','推广数','平均消费','销售总额','推广收益']
@@ -88,7 +89,7 @@ function Details() {
            <Info/>
           </TabPane>
           <TabPane tab="推广列表" key="2">
-            { '请选择推广人员' }
+            <PromoteList/>
           </TabPane>
         </Tabs>
         </Spin>

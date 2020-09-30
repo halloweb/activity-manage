@@ -1,8 +1,9 @@
 import React,{ useState, useEffect } from 'react'
 import './category.scss'
-import { Input, Form , Icon, Modal } from 'antd'
+import { Input, Form , Icon, Modal, Radio, Select } from 'antd'
 import PicturesWall from '../../components/PicturesWall'
 import Model from '../../model'
+const { Option } = Select
 function CategoryList (props) {
     const [categoryList,setCategory] = useState([])
     const [activeIndex,setActiveIndex] = useState(0)
@@ -36,12 +37,13 @@ function CategoryList (props) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const getCategory = (i) => {
-            Model.getBigActivity()
+            let params = {}
+            if (props.type !== null) params.type = props.type 
+            Model.getBigActivity(params)
             .then(data => {
                 setCategory(data)
-                console.log(i)
                 let index = data[i] ? i : 0
-                Model.getSmallActivity(data[index].id)
+                data.length ? Model.getSmallActivity(data[index].id)
                     .then(res => {
                         if(res.length) {
                             data[index].children = res
@@ -52,7 +54,7 @@ function CategoryList (props) {
                             props.categoryChange(categoryList[index])
                             props.secondChange(null)
                         }
-                    })               
+                    }) :  props.categoryChange(null)          
             })
     }
     const handleOk = () => {
@@ -60,7 +62,7 @@ function CategoryList (props) {
         form.validateFields((err, values) => {
           if (err) return
           Object.keys(editContent).length === 0 
-            ?   Model.addActivityType({...values})
+            ?   Model.addActivityType({...values, })
                 .then(({data}) => {
                 if(data.status === 200) {
                     setVisible(false)
@@ -139,7 +141,8 @@ CategoryList.defaultProps = {
     showSecond: true,
     canEdit: false,
     secondChange: () => {},
-    categoryChange: () => {}
+    categoryChange: () => {},
+    type: null
 }
 const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
     class extends React.Component {
@@ -187,7 +190,7 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
           <Modal
             visible={visible}
             bodyStyle={{maxHeight: '400px',overflow: 'auto'}}
-            title="商家认证"
+            title="活动信息"
             cancelText="取消"
             okText="确定"
             onCancel={() => onCancel(false)}
@@ -199,6 +202,16 @@ const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
                     rules: [{ required: true, message: '请填写公司名称' }],
                     initialValue: info.name || ''
                   })(<Input />)}
+                </Form.Item> 
+                <Form.Item label="类型">
+                  {getFieldDecorator('type', {
+                    rules: [{ required: true, message: '请选择类型' }],
+                    initialValue: info.type || ''
+                  })(<Select>
+                    <Option value={1}>商业活动</Option>
+                    <Option value={2}>个人活动</Option>
+                    <Option value={3}>社团活动</Option>
+                  </Select>)}
                 </Form.Item> 
                 <Form.Item label="大类照片">
                   {getFieldDecorator('bigIcon', {

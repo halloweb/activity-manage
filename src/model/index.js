@@ -7,8 +7,8 @@ const Model = {
         "content-type":"application/x-www-form-urlencoded"
     }})
     },
-    getBigActivity () {
-        return flyio.get($url.getBigActivity)
+    getBigActivity (data = {}) {
+        return flyio.get($url.getBigActivity, data)
         .then(({data}) => {
             if(data.status === 200) {
                 return data.data
@@ -130,6 +130,14 @@ const Model = {
     },
     insertTopUpWithCount(data) {
         return flyio.post($url.insertTopUpWithCount,data)
+    },
+    getUsersByActivityId(params) {
+        if (params.orderBy !== 'registerDate') {
+            return flyio.get($url.getUsersByActivityId,params) 
+        } else {
+            let {activityId,orderBy,...rest} = params
+            return  flyio.get($url.selectBusinessUsersNewest,rest)
+        }
     }
 
 }

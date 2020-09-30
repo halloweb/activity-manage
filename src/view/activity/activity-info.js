@@ -47,8 +47,7 @@ function ActivityInfo(props) {
       }
     })
   }
-  const suspend = () => {
-    let status = props.info.activityStatus === 1 ? 0 : 1
+  const suspend = (status) => {
     Model.suspendActivity({activityId: props.info.id,status: status}).then(({data}) => {
       if(data.status === 200) {
          message.success('成功')
@@ -93,7 +92,15 @@ function ActivityInfo(props) {
         <img src={props.info.activityIcon} />
       </div>
     </div>
-    {Object.keys(props.info).length ? <div className='btn' onClick={suspend}>{props.info.activityStatus === 1 ? '挂起' : '上线'}</div> :null}
+    {Object.keys(props.info).length ? 
+       (props.info.activityStatus === 2 || props.info.activityStatus === 3) ? 
+       <div className="btngroup">
+          <div onClick={() => suspend(1)}>通过</div>
+          <div className={`${props.info.activityStatus === 3 ? 'disabled' : null}`} onClick={() => suspend(3)}>不通过</div>
+       </div> 
+       : <div className='btn' onClick={() => suspend(props.info.activityStatus === 1 ? 0 : 1)}>{props.info.activityStatus === 1 ? '挂起' : '上线'}</div> 
+       :null
+    }
     <CollectionCreateForm
       wrappedComponentRef={saveFormRef}
       visible={visible}
